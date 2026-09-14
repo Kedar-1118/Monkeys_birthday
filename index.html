@@ -29,32 +29,6 @@
   <!-- Ambient Audio Fallback / Sound Synth Container -->
   <audio id="bg-audio" preload="metadata"></audio>
 
-  <!-- Dev / Preview Quick Access Bar (Discreet, expandable) -->
-  <aside id="preview-bar" class="preview-bar" aria-label="Preview and Test Controls">
-    <button id="preview-toggle-btn" class="preview-toggle-btn" title="Toggle Preview Controls" aria-label="Toggle Preview Controls">
-      <i data-lucide="sparkles"></i>
-      <span class="preview-label">Preview Mode</span>
-    </button>
-    <div id="preview-menu" class="preview-menu" hidden>
-      <div class="preview-menu-header">
-        <span>Fast Screen Navigation</span>
-        <button id="preview-close-btn" aria-label="Close Preview Menu">&times;</button>
-      </div>
-      <div class="preview-buttons">
-        <button data-jump="countdown">1. Countdown</button>
-        <button data-jump="story">2. Our Story</button>
-        <button data-jump="song">3. Our Song</button>
-        <button data-jump="quiz">4. Memory Game</button>
-        <button data-jump="reveal">5. Final Reveal</button>
-      </div>
-      <div class="preview-toggle-wrap">
-        <label>
-          <input type="checkbox" id="preview-unlock-chk">
-          <span>Force Countdown Unlock</span>
-        </label>
-      </div>
-    </div>
-  </aside>
 
   <!-- Global Subtle Progress Indicator (Visible in stages 2 - 5) -->
   <nav id="global-progress" class="global-progress" aria-label="Experience Progress" hidden>
