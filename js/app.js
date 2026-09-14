@@ -3,7 +3,6 @@
  * Master application orchestrator and stage coordinator
  */
 
-import { CONFIG } from '../config.js';
 import { ParticleSystem } from './particles.js';
 import { CountdownManager } from './countdown.js';
 import { StoryManager } from './story.js';
@@ -40,10 +39,7 @@ class App {
     this.quizMgr = new QuizManager(() => this.goToScreen('reveal'));
     this.revealMgr = new FinalRevealManager(() => this.goToScreen('story'));
 
-    // 3. Initialize preview quick drawer
-    this.setupPreviewBar();
-
-    // 4. Initialize Lucide icons
+    // 3. Initialize Lucide icons
     if (window.lucide) {
       window.lucide.createIcons();
     }
@@ -102,44 +98,6 @@ class App {
           dot.classList.add('active');
         } else {
           dot.classList.remove('active');
-        }
-      });
-    }
-  }
-
-  setupPreviewBar() {
-    const toggleBtn = document.getElementById('preview-toggle-btn');
-    const menu = document.getElementById('preview-menu');
-    const closeBtn = document.getElementById('preview-close-btn');
-    const unlockChk = document.getElementById('preview-unlock-chk');
-
-    if (toggleBtn && menu) {
-      toggleBtn.addEventListener('click', () => {
-        menu.hidden = !menu.hidden;
-      });
-    }
-
-    if (closeBtn && menu) {
-      closeBtn.addEventListener('click', () => {
-        menu.hidden = true;
-      });
-    }
-
-    // Jump buttons
-    const jumpButtons = document.querySelectorAll('[data-jump]');
-    jumpButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const target = btn.dataset.jump;
-        this.goToScreen(target);
-        if (menu) menu.hidden = true;
-      });
-    });
-
-    // Force unlock checkbox
-    if (unlockChk) {
-      unlockChk.addEventListener('change', (e) => {
-        if (e.target.checked) {
-          this.countdownMgr.forceUnlock();
         }
       });
     }
