@@ -1,0 +1,196 @@
+/* ===================================================================
+   MAIN STYLESHEET - DESIGN SYSTEM & TOKENS
+   Theme: Sophisticated Dark Romance (Obsidian, Midnight Navy, Rose Glow)
+   =================================================================== */
+
+:root {
+  /* Color Palette */
+  --bg-primary: #06050b;
+  --bg-secondary: #0d0a18;
+  --bg-surface: rgba(22, 16, 38, 0.7);
+  --bg-surface-hover: rgba(35, 26, 60, 0.85);
+  
+  /* Romantic Accents */
+  --accent-rose: #ff6b95;
+  --accent-rose-soft: rgba(255, 107, 149, 0.15);
+  --accent-rose-glow: rgba(255, 107, 149, 0.35);
+  --accent-lavender: #b18cfe;
+  --accent-gold: #f6d396;
+  --accent-gold-soft: rgba(246, 211, 150, 0.2);
+
+  /* Neutrals & Text */
+  --text-primary: #f8f6fc;
+  --text-secondary: #c3b9db;
+  --text-muted: #8c82a8;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(255, 107, 149, 0.3);
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Transitions & Shadows */
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(255, 107, 149, 0.25);
+  --shadow-glow-large: 0 0 80px rgba(177, 140, 254, 0.3);
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+}
+
+/* Base Resets */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Dynamic Ambient Canvas Layer */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* App Main Container */
+.app-container {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Common Section Container Layout */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 60px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease-cinematic), transform 0.8s var(--ease-cinematic), filter 0.8s var(--ease-cinematic);
+  transform: scale(0.98);
+  filter: blur(4px);
+}
+
+.screen.active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.screen-content {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Glassmorphic Card Surface */
+.glass-card {
+  background: var(--bg-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-glass);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.glass-card:hover {
+  border-color: var(--border-glow);
+}
+
+/* Section Header Typography */
+.section-header {
+  margin-bottom: 24px;
+}
+
+.section-badge {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-rose);
+  background: var(--accent-rose-soft);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 107, 149, 0.2);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.section-subtitle {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* Accessible focus outline */
+:focus-visible {
+  outline: 2px solid var(--accent-rose);
+  outline-offset: 3px;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,168 @@
+/* ===================================================================
+   ANIMATIONS & KEYFRAMES
+   Cinematic, subtle, romantic transitions
+   =================================================================== */
+
+/* Ambient Glowing Heartbeat / Button Pulse */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 149, 0.35), 0 0 40px rgba(177, 140, 254, 0.2);
+    transform: translateY(0);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 107, 149, 0.6), 0 0 60px rgba(177, 140, 254, 0.35);
+    transform: translateY(-2px);
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 3.5s ease-in-out infinite;
+}
+
+/* Vinyl Record Spin */
+@keyframes vinylSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.vinyl-disc.playing {
+  animation: vinylSpin 14s linear infinite;
+}
+
+.vinyl-disc.paused {
+  animation-play-state: paused;
+}
+
+/* Subtle Floating Hover */
+@keyframes floatGentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.float-gentle {
+  animation: floatGentle 4s ease-in-out infinite;
+}
+
+/* Shimmer Button Effect */
+@keyframes shimmerLight {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  100% { transform: translateX(200%) rotate(25deg); }
+}
+
+.btn-shimmer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: shimmerLight 5s infinite;
+  pointer-events: none;
+}
+
+/* Typewriter Blinking Caret */
+@keyframes blinkCaret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: var(--accent-rose);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: blinkCaret 0.9s infinite;
+}
+
+/* Heart Pulse */
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.18); }
+  40% { transform: scale(1.02); }
+  60% { transform: scale(1.22); }
+}
+
+.heart-pulse {
+  animation: heartPulse 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Light Bloom Burst (Used on Unlock and Final Reveal) */
+@keyframes lightBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(10px);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+    filter: blur(20px);
+  }
+}
+
+.light-burst-effect {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 223, 153, 0.8) 0%, rgba(255, 107, 149, 0.5) 40%, transparent 70%);
+  animation: lightBurst 1.8s var(--ease-cinematic) forwards;
+  pointer-events: none;
+}
+
+/* Fade and Slide Up (For memory letters, cards, dialogs) */
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.fade-slide-up {
+  animation: fadeSlideUp 0.9s var(--ease-cinematic) forwards;
+}
+
+/* Floating Hearts Ambient */
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-120px) scale(1.1) rotate(15deg);
+    opacity: 0;
+  }
+}
+
+.floating-heart {
+  position: absolute;
+  animation: floatHeart 4s ease-out forwards;
+  pointer-events: none;
+  color: var(--accent-rose);
+}

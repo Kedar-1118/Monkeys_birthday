@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="description" content="A cinematic, interactive birthday surprise website made with love.">
+  <meta name="theme-color" content="#07060e">
+  <title>A Special Surprise Just For You ✨</title>
+
+  <!-- Google Fonts: Cormorant Garamond (Serif), Playfair Display & Outfit (Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons (lightweight CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/screens.css">
+</head>
+<body>
+
+  <!-- Ambient Dynamic Canvas: Starfield, stardust & floating romantic particles -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Audio Fallback / Sound Synth Container -->
+  <audio id="bg-audio" preload="metadata"></audio>
+
+  <!-- Dev / Preview Quick Access Bar (Discreet, expandable) -->
+  <aside id="preview-bar" class="preview-bar" aria-label="Preview and Test Controls">
+    <button id="preview-toggle-btn" class="preview-toggle-btn" title="Toggle Preview Controls" aria-label="Toggle Preview Controls">
+      <i data-lucide="sparkles"></i>
+      <span class="preview-label">Preview Mode</span>
+    </button>
+    <div id="preview-menu" class="preview-menu" hidden>
+      <div class="preview-menu-header">
+        <span>Fast Screen Navigation</span>
+        <button id="preview-close-btn" aria-label="Close Preview Menu">&times;</button>
+      </div>
+      <div class="preview-buttons">
+        <button data-jump="countdown">1. Countdown</button>
+        <button data-jump="story">2. Our Story</button>
+        <button data-jump="song">3. Our Song</button>
+        <button data-jump="quiz">4. Memory Game</button>
+        <button data-jump="reveal">5. Final Reveal</button>
+      </div>
+      <div class="preview-toggle-wrap">
+        <label>
+          <input type="checkbox" id="preview-unlock-chk">
+          <span>Force Countdown Unlock</span>
+        </label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Global Subtle Progress Indicator (Visible in stages 2 - 5) -->
+  <nav id="global-progress" class="global-progress" aria-label="Experience Progress" hidden>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-steps">
+      <span class="step-dot active" data-step="1" title="Our Story"><span>Story</span></span>
+      <span class="step-dot" data-step="2" title="Our Song"><span>Song</span></span>
+      <span class="step-dot" data-step="3" title="Memory Game"><span>Game</span></span>
+      <span class="step-dot" data-step="4" title="Final Reveal"><span>Surprise</span></span>
+    </div>
+  </nav>
+
+  <!-- Main Experience Container -->
+  <main id="app" class="app-container">
+
+    <!-- ================================================================
+         SCREEN 1: THE MYSTERY COUNTDOWN INTRO
+         ================================================================ -->
+    <section id="screen-countdown" class="screen active" aria-labelledby="countdown-heading">
+      <div class="screen-content countdown-wrapper">
+        
+        <!-- Typewriter / Intro Lines -->
+        <div class="intro-box">
+          <p id="intro-line-1" class="intro-line"></p>
+          <p id="intro-line-2" class="intro-line"></p>
+          <p id="intro-line-3" class="intro-line"></p>
+        </div>
+
+        <!-- Locked Countdown State -->
+        <div id="countdown-locked-state" class="countdown-card">
+          <h2 id="countdown-heading" class="countdown-title">Your surprise unlocks in</h2>
+          
+          <div class="timer-display" role="timer" aria-live="polite">
+            <div class="time-block">
+              <span id="timer-days" class="time-number">00</span>
+              <span class="time-label">DAYS</span>
+            </div>
+            <span class="time-separator">:</span>
+            <div class="time-block">
+              <span id="timer-hours" class="time-number">00</span>
+              <span class="time-label">HOURS</span>
+            </div>
+            <span class="time-separator">:</span>
+            <div class="time-block">
+              <span id="timer-minutes" class="time-number">00</span>
+              <span class="time-label">MINUTES</span>
+            </div>
+            <span class="time-separator">:</span>
+            <div class="time-block">
+              <span id="timer-seconds" class="time-number">00</span>
+              <span class="time-label">SECONDS</span>
+            </div>
+          </div>
+
+          <p class="wait-subtext" id="countdown-wait-text">Some things are worth waiting for. ❤️</p>
+        </div>
+
+        <!-- Unlocked State (Revealed at Zero or in Preview) -->
+        <div id="countdown-unlocked-state" class="unlock-card" hidden>
+          <div class="unlock-badge">✨ SURPRISE UNLOCKED ✨</div>
+          <h1 class="welcome-heading" id="welcome-text">Welcome, My Love.</h1>
+          <p class="ready-prompt" id="ready-prompt">Are you ready to begin our story?</p>
+          
+          <button id="btn-start-story" class="btn-primary glow-pulse" aria-label="Start Our Story">
+            <span class="btn-text" id="btn-start-story-text">START OUR STORY ❤️</span>
+            <span class="btn-shimmer"></span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         SCREEN 2: OUR STORY (CINEMATIC CHAPTERS)
+         ================================================================ -->
+    <section id="screen-story" class="screen" aria-labelledby="story-heading">
+      <div class="screen-content story-wrapper">
+        
+        <header class="section-header">
+          <span class="section-badge">CHAPTER <span id="chapter-current-num">01</span> / <span id="chapter-total-num">04</span></span>
+          <h1 id="story-heading" class="section-title">Our Story</h1>
+          <p id="story-subheading" class="section-subtitle">Every love story has a beginning.</p>
+        </header>
+
+        <!-- Dynamic Chapter Card Container -->
+        <div id="story-card-container" class="story-card-container">
+          <!-- Rendered dynamically by story.js -->
+        </div>
+
+        <!-- Chapter Indicator Dots & Navigation -->
+        <div class="story-controls">
+          <button id="btn-story-prev" class="btn-secondary story-nav-btn" aria-label="Previous Memory" disabled>
+            <i data-lucide="chevron-left"></i>
+            <span>PREV</span>
+          </button>
+
+          <div id="story-dots" class="story-dots" role="tablist" aria-label="Story Chapters">
+            <!-- Rendered by story.js -->
+          </div>
+
+          <button id="btn-story-next" class="btn-primary story-nav-btn" aria-label="Next Memory">
+            <span>NEXT MEMORY</span>
+            <i data-lucide="arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Story Climax Overlay (When chapters reach end) -->
+        <div id="story-end-dialog" class="story-end-dialog" hidden>
+          <div class="dialog-content glass-card">
+            <div class="heart-icon-glow">
+              <i data-lucide="heart"></i>
+            </div>
+            <h2 id="story-end-line1" class="dialog-line1">And somehow...</h2>
+            <p id="story-end-line2" class="dialog-line2">You became my favorite part of every day.</p>
+            <p id="story-end-prompt" class="dialog-prompt">But every story needs a soundtrack.</p>
+            
+            <button id="btn-story-continue-song" class="btn-primary glow-pulse">
+              <span id="btn-story-continue-text">CONTINUE 🎵</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         SCREEN 3: OUR SONG (ROMANTIC MUSIC PLAYER)
+         ================================================================ -->
+    <section id="screen-song" class="screen" aria-labelledby="song-heading">
+      <div class="screen-content song-wrapper">
+        
+        <header class="section-header">
+          <span class="section-badge">THE SOUNDTRACK OF US</span>
+          <h1 id="song-heading" class="section-title">Our Song</h1>
+          <p id="song-subheading" class="section-subtitle">Some songs sound different once they become ours.</p>
+        </header>
+
+        <!-- Music Experience Card -->
+        <div class="music-card glass-card">
+          
+          <!-- Vinyl / Artwork Display -->
+          <div class="artwork-wrapper">
+            <div id="vinyl-disc" class="vinyl-disc">
+              <div class="vinyl-grooves"></div>
+              <div class="vinyl-center"></div>
+            </div>
+            <div class="artwork-frame" id="music-cover-container">
+              <img id="music-cover-img" src="" alt="Album Cover" class="music-cover-img">
+              <div class="artwork-glow"></div>
+            </div>
+          </div>
+
+          <!-- Song Meta -->
+          <div class="music-meta">
+            <h2 id="music-song-title" class="song-title">Song Title</h2>
+            <p id="music-artist-name" class="song-artist">Artist Name</p>
+          </div>
+
+          <!-- Dynamic Waveform Visualizer Canvas -->
+          <div class="visualizer-wrapper">
+            <canvas id="waveform-canvas" width="300" height="48" aria-hidden="true"></canvas>
+          </div>
+
+          <!-- Timed Memory Toast Notification -->
+          <div id="lyrics-bubble" class="lyrics-bubble" aria-live="polite">
+            <i data-lucide="sparkles" class="bubble-sparkle"></i>
+            <span id="lyrics-text">Press play to start our melody...</span>
+          </div>
+
+          <!-- Time Scrubber -->
+          <div class="playback-scrubber-row">
+            <span id="music-current-time" class="time-label">0:00</span>
+            <div class="progress-bar-container" id="music-progress-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div id="music-progress-bar" class="progress-bar-fill"></div>
+            </div>
+            <span id="music-duration" class="time-label">0:00</span>
+          </div>
+
+          <!-- Player Controls -->
+          <div class="player-controls">
+            <button id="btn-rewind" class="btn-icon" aria-label="Rewind 10 seconds">
+              <i data-lucide="rotate-ccw"></i>
+            </button>
+            <button id="btn-play-pause" class="btn-play-large glow-pulse" aria-label="Play or Pause Song">
+              <i data-lucide="play" id="play-pause-icon"></i>
+            </button>
+            <button id="btn-forward" class="btn-icon" aria-label="Fast forward 10 seconds">
+              <i data-lucide="rotate-cw"></i>
+            </button>
+          </div>
+
+          <div id="audio-status-notice" class="audio-notice">
+            <span>✨ Simulated Romantic Melody Ready</span>
+          </div>
+
+        </div>
+
+        <!-- Music Footer Action -->
+        <div class="music-footer">
+          <p id="music-bottom-message" class="music-footer-text">I could stay here with you forever...</p>
+          <button id="btn-song-to-quiz" class="btn-primary">
+            <span id="btn-song-to-quiz-text">CONTINUE TO THE GAME →</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         SCREEN 4: THE MEMORY GAME (INTERACTIVE QUIZ)
+         ================================================================ -->
+    <section id="screen-quiz" class="screen" aria-labelledby="quiz-heading">
+      <div class="screen-content quiz-wrapper">
+
+        <header class="section-header">
+          <span class="section-badge" id="quiz-badge">LEVEL 1 / 5</span>
+          <h1 id="quiz-heading" class="section-title">Okay... let's see how well you remember us.</h1>
+          <p id="quiz-subheading" class="section-subtitle">Time to prove you're actually my girlfriend. 😂❤️</p>
+        </header>
+
+        <!-- Active Question Card -->
+        <div id="quiz-card" class="quiz-card glass-card">
+          
+          <div class="quiz-question-header">
+            <span class="question-number" id="quiz-q-num">QUESTION 01</span>
+            <div class="quiz-score-badge">
+              <i data-lucide="heart" class="heart-pulse"></i>
+              <span id="quiz-current-score">Score: 0</span>
+            </div>
+          </div>
+
+          <h2 id="quiz-question-text" class="quiz-question">Question text appears here?</h2>
+
+          <div id="quiz-options-container" class="quiz-options-container">
+            <!-- Dynamic Buttons rendered by quiz.js -->
+          </div>
+
+          <!-- Answer Feedback Card -->
+          <div id="quiz-feedback-card" class="quiz-feedback-card" hidden>
+            <div class="feedback-icon" id="feedback-icon">❤️</div>
+            <div class="feedback-content">
+              <h3 id="feedback-title" class="feedback-title">CORRECT ❤️</h3>
+              <p id="feedback-message" class="feedback-msg">Custom message goes here!</p>
+            </div>
+            <button id="btn-quiz-next" class="btn-primary btn-sm">
+              <span>Next Level</span>
+              <i data-lucide="arrow-right"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Quiz Completion Screen -->
+        <div id="quiz-finish-card" class="quiz-finish-card glass-card" hidden>
+          <div class="score-trophy">
+            <i data-lucide="award"></i>
+          </div>
+          <span class="finish-label">FINAL SCORE</span>
+          <div class="score-display">
+            <span id="quiz-final-score">5</span>
+            <span class="score-total">/ 5 ❤️</span>
+          </div>
+
+          <p id="quiz-score-message" class="score-feedback-text">
+            Okay, you officially know us better than I do! ❤️
+          </p>
+
+          <div class="passed-divider"></div>
+
+          <p class="passed-prompt" id="quiz-passed-text">You passed.</p>
+          <p class="final-level-prompt" id="quiz-final-level-text">But there's one last level...</p>
+
+          <button id="btn-unlock-reveal" class="btn-primary btn-large glow-pulse">
+            <span id="btn-unlock-reveal-text">UNLOCK THE FINAL SURPRISE 🔓</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         SCREEN 5: THE FINAL BIRTHDAY REVEAL & LETTER
+         ================================================================ -->
+    <section id="screen-reveal" class="screen" aria-labelledby="final-heading">
+      
+      <!-- Blackout Backdrop for cinematic entrance -->
+      <div id="reveal-blackout" class="reveal-blackout"></div>
+
+      <!-- Celebration Canvas: fireworks, floating hearts & golden dust -->
+      <canvas id="fireworks-canvas" class="fireworks-canvas" aria-hidden="true"></canvas>
+
+      <div class="screen-content reveal-wrapper">
+
+        <!-- Stage 1: Cinematic Heading Entrance -->
+        <div class="reveal-header-box">
+          <div class="glowing-halo"></div>
+          <h1 id="final-heading" class="final-title">Happy Birthday, <span id="final-her-name">My Love</span> ❤️</h1>
+        </div>
+
+        <!-- Stage 2: Media Card (Photo / Video with romantic frame) -->
+        <div class="reveal-media-container glass-card" id="reveal-media-card">
+          <div class="media-frame" id="final-media-frame">
+            <img id="final-photo-img" src="" alt="A special birthday memory" class="final-photo">
+            <video id="final-video-el" class="final-video" controls playsinline hidden></video>
+            <div class="media-ambient-glow"></div>
+          </div>
+        </div>
+
+        <!-- Stage 3: Letter Lines (Revealed line-by-line) -->
+        <article class="letter-container glass-card">
+          <div class="letter-header">
+            <i data-lucide="sparkles" class="letter-sparkle"></i>
+            <span>A Letter For You</span>
+            <i data-lucide="sparkles" class="letter-sparkle"></i>
+          </div>
+
+          <div id="letter-content" class="letter-content">
+            <!-- Injected line by line by finalReveal.js -->
+          </div>
+
+          <!-- Climax Emotional Lines -->
+          <div class="letter-closing">
+            <p id="final-closing-1" class="closing-line">Here's to all the memories we've made...</p>
+            <p id="final-closing-2" class="closing-line">...and all the ones we haven't made yet.</p>
+            <p id="final-signature" class="signature-line">I love you. ❤️</p>
+          </div>
+        </article>
+
+        <!-- Replay / Interactive Footer -->
+        <div class="reveal-footer">
+          <button id="btn-replay-experience" class="btn-secondary">
+            <i data-lucide="rotate-ccw"></i>
+            <span>Relive Our Story</span>
+          </button>
+        </div>
+
+        <!-- Secret Easter Egg Star in bottom-right corner -->
+        <div id="easter-egg-trigger" class="easter-egg-trigger" title="A secret star... ✨" role="button" tabindex="0" aria-label="Secret Easter Egg">
+          <i data-lucide="star" class="easter-egg-star"></i>
+        </div>
+
+      </div>
+
+      <!-- Easter Egg Modal Dialog -->
+      <div id="easter-egg-modal" class="modal-backdrop" hidden>
+        <div class="modal-card glass-card">
+          <div class="modal-icon">✨</div>
+          <h2 id="modal-title" class="modal-title">P.S. You thought that was everything?</h2>
+          <p id="modal-text" class="modal-body">There's still so much more I want to do with you.</p>
+          <button id="btn-close-modal" class="btn-primary btn-sm">I Love You! 💖</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Application Coordinator (ES6 Module) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
